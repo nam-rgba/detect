@@ -145,9 +145,9 @@ const HomePage = (props: Props) => {
       toast('Camera not found. Please refresh');
     }else{
       const imgSrc = webcamRef.current.getScreenshot();
-      console.log(imgSrc);
       const blob = base64toBlob(imgSrc);
 
+      if(!blob) return;
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -157,7 +157,8 @@ const HomePage = (props: Props) => {
 
   }
 
-  function base64toBlob(base64Data: string) {
+  function base64toBlob(base64Data: string|null) {
+    if(!base64Data) return null;
     const byteCharacters = atob(base64Data.split(",")[1]);
   const arrayBuffer = new ArrayBuffer(byteCharacters.length);
   const byteArray = new Uint8Array(arrayBuffer);
